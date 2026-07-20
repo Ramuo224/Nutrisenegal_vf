@@ -1,0 +1,312 @@
+/* ============================================================
+   NutriSénégal — Charte graphique
+   Palette  : Vert Sénégal #0B5D38 · Coton #F4F6F2 · Nuit #122019
+              Triage : Vert #00853F / Ambre #F2A900 / Rouge #C8102E
+              (la gamme de triage reprend les couleurs du drapeau)
+   Typo     : Bricolage Grotesque (display) · IBM Plex Sans (texte)
+              IBM Plex Mono (données chiffrées)
+   Signature: la « bande de triage » tricolore, étoile au centre —
+              à la fois échelle médicale et drapeau national.
+   ============================================================ */
+:root {
+  --vert: #0B5D38;
+  --vert-fonce: #07432a;
+  --coton: #F4F6F2;
+  --nuit: #122019;
+  --carte: #ffffff;
+  --ligne: #dde4dc;
+  --t-vert: #00853F;
+  --t-ambre: #F2A900;
+  --t-rouge: #C8102E;
+  --gris: #5d6b61;
+  --radius: 14px;
+  --ombre: 0 1px 2px rgba(18,32,25,.06), 0 8px 24px rgba(18,32,25,.07);
+}
+* { box-sizing: border-box; margin: 0; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+
+body {
+  font: 15px/1.55 "IBM Plex Sans", system-ui, sans-serif;
+  background: var(--coton); color: var(--nuit);
+  display: grid; grid-template-columns: 232px 1fr; min-height: 100vh;
+}
+h1, h2, h3 { font-family: "Bricolage Grotesque", "IBM Plex Sans", sans-serif; }
+.mono, td.num, .stat-val { font-family: "IBM Plex Mono", monospace; }
+
+/* Bande de triage — signature */
+.bande { display: flex; height: 6px; border-radius: 99px; overflow: hidden; }
+.bande i { flex: 1; }
+.bande i:nth-child(1) { background: var(--t-vert); }
+.bande i:nth-child(2) { background: var(--t-ambre); position: relative; }
+.bande i:nth-child(3) { background: var(--t-rouge); }
+.bande.drapeau { height: 10px; }
+.bande.drapeau i:nth-child(2)::after {
+  content: "★"; position: absolute; inset: 0; display: grid; place-items: center;
+  color: var(--vert-fonce); font-size: 9px; line-height: 1;
+}
+
+/* ── Barre latérale ── */
+aside {
+  background: linear-gradient(180deg, var(--vert) 0%, var(--vert-fonce) 100%);
+  color: #eaf3ec; padding: 26px 18px; position: sticky; top: 0; height: 100vh;
+  display: flex; flex-direction: column; gap: 26px;
+}
+.brand h1 { font-size: 21px; font-weight: 800; letter-spacing: -.3px; color: #fff; }
+.brand small { display: block; opacity: .75; font-size: 11.5px; margin: 4px 0 10px; }
+nav { display: flex; flex-direction: column; gap: 4px; }
+nav a {
+  color: #d7e6da; text-decoration: none; padding: 10px 12px; border-radius: 10px;
+  font-weight: 500; display: flex; gap: 10px; align-items: center; font-size: 14px;
+  transition: background .15s;
+}
+nav a:hover { background: rgba(255,255,255,.10); }
+nav a.actif { background: rgba(255,255,255,.16); color: #fff; font-weight: 600; }
+nav a .pucet { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.sms-mode {
+  margin-top: auto; font-size: 11.5px; background: rgba(0,0,0,.22);
+  padding: 10px 12px; border-radius: 10px; line-height: 1.5;
+}
+.sms-mode b { color: #ffd166; }
+
+/* ── Contenu ── */
+main { padding: 30px 36px 48px; max-width: 1180px; }
+.entete { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 6px; }
+.entete h2 { font-size: 26px; font-weight: 800; letter-spacing: -.4px; }
+.entete p { color: var(--gris); font-size: 13.5px; }
+main > .bande { margin: 14px 0 26px; }
+
+.grille { display: grid; gap: 18px; }
+.g4 { grid-template-columns: repeat(4, 1fr); }
+.g2 { grid-template-columns: 1.2fr .8fr; }
+@media (max-width: 980px) { body { grid-template-columns: 1fr; } aside { position: static; height: auto; } .g4, .g2 { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) { .g4, .g2 { grid-template-columns: 1fr; } main { padding: 20px; } }
+
+.carte {
+  background: var(--carte); border: 1px solid var(--ligne);
+  border-radius: var(--radius); box-shadow: var(--ombre); padding: 20px 22px;
+}
+.carte h3 { font-size: 15px; font-weight: 700; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
+.carte h3 .lien { font: 600 12px "IBM Plex Sans"; color: var(--vert); text-decoration: none; }
+
+.stat .stat-val { font-size: 30px; font-weight: 600; letter-spacing: -1px; }
+.stat .stat-lbl { color: var(--gris); font-size: 12.5px; margin-top: 2px; }
+.stat.rouge .stat-val { color: var(--t-rouge); }
+.stat.ambre .stat-val { color: #c98a00; }
+.stat.vert .stat-val { color: var(--t-vert); }
+
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+th { text-align: left; color: var(--gris); font-weight: 600; font-size: 11.5px;
+     text-transform: uppercase; letter-spacing: .06em; padding: 6px 8px; border-bottom: 1px solid var(--ligne); }
+td { padding: 9px 8px; border-bottom: 1px solid #edf1ec; }
+td.num { text-align: right; font-size: 13px; }
+tr:last-child td { border-bottom: 0; }
+
+.badge { display: inline-block; padding: 3px 10px; border-radius: 99px; font: 700 11px "IBM Plex Sans"; letter-spacing: .04em; }
+.badge.ROUGE, .badge.CRITIQUE { background: #fbe4e8; color: var(--t-rouge); }
+.badge.ORANGE, .badge.ELEVE { background: #fdf0d2; color: #9a6b00; }
+.badge.MODERE { background: #fff8e0; color: #8a7400; }
+.badge.VERT, .badge.FAIBLE { background: #ddf2e4; color: var(--vert); }
+/* Cycle de vie des cas */
+.badge.NOUVEAU { background: #e8eef9; color: #1d4ed8; }
+.badge.PRIS_EN_CHARGE { background: #fdf0d2; color: #9a6b00; }
+.badge.TRAITE { background: #ddf2e4; color: var(--vert); }
+.actions-cas { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.btn-mini {
+  padding: 4px 10px; border: 1px solid #d4dad2; border-radius: 8px;
+  background: #fff; color: var(--encre); font: 600 11.5px "IBM Plex Sans";
+  cursor: pointer; transition: filter .12s;
+}
+.btn-mini:hover { filter: brightness(.96); }
+.btn-mini.vert { background: var(--t-vert); border-color: var(--t-vert); color: #fff; }
+.btn-mini.ambre { background: var(--t-ambre); border-color: var(--t-ambre); color: #4a3700; }
+
+/* Jauge de score régionale */
+.jauge { background: #eef2ed; border-radius: 99px; height: 8px; overflow: hidden; }
+.jauge i { display: block; height: 100%; border-radius: 99px; }
+
+/* Pré-alertes */
+.prealerte {
+  border-left: 4px solid var(--t-ambre); background: #fffaf0;
+  padding: 12px 14px; border-radius: 0 10px 10px 0; font-size: 13.5px; margin-bottom: 10px;
+}
+
+/* Formulaires */
+form.fiche { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; }
+form.fiche label { font-size: 12.5px; font-weight: 600; color: var(--gris); display: block; margin-bottom: 5px; }
+form.fiche input, form.fiche select {
+  width: 100%; padding: 10px 12px; border: 1.5px solid var(--ligne); border-radius: 10px;
+  font: 14px "IBM Plex Sans"; background: #fff; color: var(--nuit);
+}
+form.fiche input:focus, form.fiche select:focus, button:focus-visible, a:focus-visible {
+  outline: 3px solid rgba(11,93,56,.35); outline-offset: 1px; border-color: var(--vert);
+}
+.pleine { grid-column: 1 / -1; }
+button.principal {
+  background: var(--vert); color: #fff; border: 0; padding: 12px 22px;
+  border-radius: 10px; font: 600 14.5px "IBM Plex Sans"; cursor: pointer;
+}
+button.principal:hover { background: var(--vert-fonce); }
+.case { display: flex; gap: 9px; align-items: center; font-size: 14px; }
+.case input { width: auto; }
+
+/* Résultat de dépistage */
+.resultat { border-radius: var(--radius); padding: 22px; color: #fff; margin-bottom: 22px; }
+.resultat.ROUGE { background: linear-gradient(135deg, #C8102E, #8e0b20); }
+.resultat.ORANGE { background: linear-gradient(135deg, #E87722, #c05e10); }
+.resultat.VERT { background: linear-gradient(135deg, #00853F, #07432a); }
+.resultat .niveau { font: 800 24px "Bricolage Grotesque"; letter-spacing: .5px; }
+.resultat p { opacity: .94; margin-top: 6px; font-size: 14px; }
+.resultat .conduite { margin-top: 12px; background: rgba(255,255,255,.16); padding: 10px 12px; border-radius: 10px; font-size: 13.5px; }
+
+/* SMS log — bulles */
+.sms-flux { display: flex; flex-direction: column; gap: 8px; max-height: 380px; overflow-y: auto; }
+.bulle { max-width: 88%; padding: 9px 12px; border-radius: 12px; font: 12.5px/1.5 "IBM Plex Mono"; }
+.bulle.OUT { background: #e3f1e7; border-bottom-left-radius: 3px; align-self: flex-start; }
+.bulle.IN { background: var(--vert); color: #fff; border-bottom-right-radius: 3px; align-self: flex-end; }
+.bulle small { display: block; opacity: .6; font: 10.5px "IBM Plex Sans"; margin-top: 3px; }
+
+iframe.carte-map { width: 100%; height: 560px; border: 0; border-radius: var(--radius); box-shadow: var(--ombre); }
+
+/* ── Formulaire de clôture (agent + note) ─────────────────────────────── */
+details.cloture summary { list-style: none; display: inline-block; }
+details.cloture summary::-webkit-details-marker { display: none; }
+details.cloture[open] summary { filter: brightness(.94); }
+.form-cloture {
+  display: grid; gap: 6px; margin-top: 8px; padding: 10px;
+  background: #f7faf7; border: 1px solid #dfe7df; border-radius: 10px;
+  max-width: 280px;
+}
+.form-cloture input {
+  padding: 6px 9px; border: 1px solid #cfd8cf; border-radius: 8px;
+  font: 400 12.5px "IBM Plex Sans"; background: #fff;
+}
+.form-cloture input:focus { outline: 2px solid var(--t-vert); outline-offset: 1px; }
+.note-cloture {
+  margin-top: 3px; color: var(--gris); font-size: 12px; font-style: italic;
+  max-width: 260px;
+}
+
+/* ── Écran d'authentification (split héro + formulaire) ──────────────── */
+body.auth { display: block; min-height: 100vh; background: #F4F6F2; }
+.auth-split {
+  display: grid; grid-template-columns: 1.08fr 1fr; min-height: 100vh;
+}
+.auth-hero {
+  position: relative; color: #fff; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: space-between;
+  gap: 28px; padding: clamp(24px, 5vw, 64px);
+  background:
+    radial-gradient(900px 520px at 110% -20%, rgba(242,169,0,.28), transparent 55%),
+    radial-gradient(700px 520px at -20% 115%, rgba(0,133,63,.55), transparent 60%),
+    linear-gradient(160deg, #0B5D38 0%, #06422a 55%, #032a1a 100%);
+}
+.auth-hero::after {  /* trame pointillée discrète */
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .18;
+  background-image: radial-gradient(rgba(255,255,255,.5) 1px, transparent 1.4px);
+  background-size: 26px 26px;
+}
+.auth-hero > * { position: relative; z-index: 1; }
+.auth-hero-haut { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+.auth-hero-haut .bande { width: 132px; }
+.auth-badge {
+  display: inline-block; padding: 6px 12px; border-radius: 99px;
+  border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.10);
+  font: 600 12px "IBM Plex Sans"; letter-spacing: .04em;
+  backdrop-filter: blur(4px);
+}
+.auth-hero-coeur h1 {
+  font-family: "Bricolage Grotesque", sans-serif; font-weight: 800;
+  font-size: clamp(30px, 4.6vw, 56px); line-height: 1.06; margin: 0 0 14px;
+  letter-spacing: -.01em;
+}
+.auth-hero-coeur p {
+  max-width: 46ch; margin: 0; color: rgba(255,255,255,.82);
+  font-size: clamp(13.5px, 1.3vw, 15.5px); line-height: 1.65;
+}
+.auth-stats {
+  list-style: none; display: flex; gap: clamp(14px, 2.5vw, 34px);
+  flex-wrap: wrap; margin: 0; padding: 18px 0 0;
+  border-top: 1px solid rgba(255,255,255,.22);
+}
+.auth-stats li { display: grid; gap: 2px; min-width: 120px; }
+.auth-stats b {
+  font-family: "IBM Plex Mono", monospace; font-size: clamp(20px, 2.4vw, 28px);
+  color: var(--t-ambre, #F2A900);
+}
+.auth-stats span { font-size: 11.5px; color: rgba(255,255,255,.72); max-width: 20ch; }
+.auth-panneau {
+  display: grid; place-items: center; padding: clamp(18px, 4vw, 48px);
+  background:
+    radial-gradient(620px 380px at 90% 0%, rgba(0,133,63,.08), transparent 60%),
+    #F4F6F2;
+}
+.auth-carte {
+  width: 100%; max-width: 440px; background: #fff;
+  border: 1px solid #e2e7e1; border-radius: 18px;
+  padding: clamp(20px, 3.4vw, 32px);
+  box-shadow: 0 22px 60px -26px rgba(11, 93, 56, .38);
+}
+.auth-brand h1 {
+  font-family: "Bricolage Grotesque", sans-serif; font-weight: 800;
+  font-size: 24px; color: var(--vert); margin: 0;
+}
+.auth-brand small { color: var(--gris); font-size: 11.5px; letter-spacing: .06em; }
+.auth-carte h2 { font-size: 19px; margin: 18px 0 4px; }
+.auth-note { color: var(--gris); font-size: 12.5px; margin: 0 0 14px; line-height: 1.55; }
+.auth-erreur {
+  background: #fbe4e8; color: var(--t-rouge); border: 1px solid #f3c2cb;
+  padding: 9px 12px; border-radius: 10px; font-size: 13px; margin-bottom: 12px;
+}
+form.fiche.une-col { grid-template-columns: 1fr; }
+form.fiche.une-col input, form.fiche.une-col select {
+  width: 100%; font-size: 16px;              /* 16px : pas de zoom forcé iOS */
+  box-sizing: border-box;
+}
+.deux-champs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.auth-lien { font-size: 13px; margin: 14px 0 0; }
+.auth-lien a { color: var(--vert); font-weight: 600; }
+.auth-pied {
+  margin-top: 16px; padding-top: 12px; border-top: 1px dashed #e2e7e1;
+  color: var(--gris); font-size: 10.8px; line-height: 1.5;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .auth-hero-haut, .auth-hero-coeur, .auth-stats { animation: montee .55s ease both; }
+  .auth-carte { animation: montee .55s ease .12s both; }
+  @keyframes montee { from { opacity: 0; transform: translateY(12px); } }
+}
+@media (max-width: 920px) {
+  .auth-split { grid-template-columns: 1fr; }
+  .auth-hero { min-height: auto; gap: 18px; padding: 22px 20px 20px; }
+  .auth-hero-coeur h1 { font-size: clamp(26px, 7.4vw, 34px); }
+  .auth-hero-coeur p { font-size: 13.5px; }
+  .auth-stats { gap: 16px; padding-top: 14px; }
+  .auth-stats li { min-width: 96px; }
+  .auth-panneau { padding: 18px 14px 28px; }
+}
+@media (max-width: 380px) {
+  .deux-champs { grid-template-columns: 1fr; }
+}
+/* Agent connecté (sidebar) */
+.agent-box {
+  margin-top: 10px; padding: 10px 12px; border-radius: 12px;
+  background: rgba(255,255,255,.08); font-size: 12.5px;
+}
+.agent-nom { font-weight: 600; }
+.agent-zone { color: rgba(255,255,255,.65); font-size: 11.5px; margin: 1px 0 7px; }
+.agent-box .btn-mini { background: transparent; color: #fff; border-color: rgba(255,255,255,.35); }
+.agent-box .btn-mini:hover { background: rgba(255,255,255,.12); filter: none; }
+
+/* Rôles & activité */
+.badge.ROLE_ADMIN { background: #ece5fb; color: #6d28d9; }
+.badge.ROLE_AGENT { background: #e7efe9; color: var(--vert); }
+.badge.ACTION { background: #eef2ed; color: var(--encre, #1c221d); font-weight: 500; }
+.agent-carte { display: grid; gap: 12px; align-content: start; }
+.agent-entete { display: flex; justify-content: space-between; gap: 10px; align-items: start; }
+.agent-meta { color: var(--gris); font-size: 12px; }
+.agent-stats { display: flex; gap: 26px; }
+.agent-stats b { font-size: 22px; }
+.agent-stats span { display: block; color: var(--gris); font-size: 11.5px; }
+.agent-pied { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.carte-entete { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+a.btn-mini { text-decoration: none; display: inline-block; }

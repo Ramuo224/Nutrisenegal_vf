@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titre %}NutriSénégal{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css?v={{ css_v }}">
+</head>
+<body>
+  <aside>
+    <div class="brand">
+      <h1>NutriSénégal</h1>
+      <small>Dépistage · Prévention · Cartographie</small>
+      <div class="bande drapeau" aria-hidden="true"><i></i><i></i><i></i></div>
+    </div>
+    <nav aria-label="Navigation principale">
+      {% if agent_role == 'admin' %}
+      <a href="/" class="{{ 'actif' if page == 'accueil' }}">Tableau de bord</a>
+      {% endif %}
+      <a href="/nutriscan" class="{{ 'actif' if page == 'nutriscan' }}">
+        <span class="pucet" style="background:var(--t-rouge)"></span> NutriScan · Dépistage</a>
+      {% if agent_role == 'admin' %}
+      <a href="/cas" class="{{ 'actif' if page == 'cas' }}">
+        <span class="pucet" style="background:#1d4ed8"></span> Suivi des cas</a>
+      {% endif %}
+      <a href="/mamamenu" class="{{ 'actif' if page == 'mamamenu' }}">
+        <span class="pucet" style="background:var(--t-ambre)"></span> MamaMenu · SMS</a>
+      {% if agent_role == 'admin' %}
+      <a href="/malimap" class="{{ 'actif' if page == 'malimap' }}">
+        <span class="pucet" style="background:var(--t-vert)"></span> MaliMap · Carte</a>
+      <a href="/admin/activite" class="{{ 'actif' if page == 'activite' }}">
+        <span class="pucet" style="background:#7c3aed"></span> Activité agents</a>
+      {% endif %}
+    </nav>
+    <div class="sms-mode">
+      Passerelle SMS<br><b>{{ mode_sms | default('simulation (sms_log)') }}</b>
+    </div>
+    {% if agent_connecte %}
+    <div class="agent-box">
+      <div class="agent-nom">👤 {{ agent_connecte }}
+        <span class="badge {{ 'ROLE_ADMIN' if agent_role == 'admin' else 'ROLE_AGENT' }}"
+              style="margin-left:4px">{{ 'ADMIN' if agent_role == 'admin' else 'AGENT' }}</span>
+      </div>
+      {% if agent_zone %}<div class="agent-zone">{{ agent_zone }}</div>{% endif %}
+      <form method="post" action="/deconnexion">
+        <button class="btn-mini" type="submit">Se déconnecter</button>
+      </form>
+    </div>
+    {% endif %}
+  </aside>
+  <main>
+    {% block contenu %}{% endblock %}
+  </main>
+</body>
+</html>

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block titre %}Suivi des cas · NutriSénégal{% endblock %}
+{% block contenu %}
+<div class="entete">
+  <h2>Suivi des cas</h2>
+  <p>Chaque alerte NutriScan vit ici jusqu'à sa résolution. Un cas marqué
+     <b>traité</b> sort aussitôt du score MaliMap de sa région — la carte
+     reflète la situation réelle, pas l'historique.</p>
+</div>
+<div class="bande" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<div class="grille g4">
+  <div class="carte stat">
+    <div class="stat-val" style="color:#1d4ed8">{{ n.NOUVEAU }}</div>
+    <div class="stat-lbl">Nouveaux — en attente</div>
+  </div>
+  <div class="carte stat ambre">
+    <div class="stat-val">{{ n.PRIS_EN_CHARGE }}</div>
+    <div class="stat-lbl">Pris en charge</div>
+  </div>
+  <div class="carte stat vert">
+    <div class="stat-val">{{ n.TRAITE }}</div>
+    <div class="stat-lbl">Traités</div>
+  </div>
+  <div class="carte stat">
+    <div class="stat-val">{{ taux }}%</div>
+    <div class="stat-lbl">Taux de résolution</div>
+  </div>
+</div>
+
+<div class="carte" style="margin-top:22px">
+  <h3>Cas signalés ({{ cas | length }})</h3>
+  <table>
+    <tr><th>Enfant</th><th>Âge</th><th>Région</th><th>Gravité</th>
+        <th>Signalé le</th><th>Statut</th><th>Action</th></tr>
+    {% for c in cas %}
+    <tr>
+      <td><b>{{ c.prenom }}</b> <span style="color:var(--gris)">({{ c.sexe }})</span></td>
+      <td class="num">{{ c.age_mois }} mois</td>
+      <td>{{ c.region }}</td>
+      <td><span class="badge {{ c.score }}">{{ c.score }}</span></td>
+      <td class="num">{{ c.date_alerte[:16] }}</td>
+      <td><span class="badge {{ c.statut }}">{{ c.statut.replace('_', ' ') }}</span></td>
+      <td>
+        {% if c.statut == 'NOUVEAU' %}
+        <div class="actions-cas">
+          <form method="post" action="/cas/{{ c.id }}/statut">
+            <button class="btn-mini ambre" name="statut" value="PRIS_EN_CHARGE">Prendre en charge</button>
+          </form>
+          <details class="cloture">
+            <summary class="btn-mini vert">Marquer traité…</summary>
+            <form method="post" action="/cas/{{ c.id }}/statut" class="form-cloture">
+              <input name="traite_par" placeholder="Agent du centre — ex. Dr Ndiaye" required maxlength="60">
+              <input name="note" placeholder="Note de clôture (optionnel)" maxlength="160">
+              <button class="btn-mini vert" name="statut" value="TRAITE">Confirmer la clôture ✓</button>
+            </form>
+          </details>
+        </div>
+        {% elif c.statut == 'PRIS_EN_CHARGE' %}
+        <details class="cloture">
+          <summary class="btn-mini vert">Marquer traité…</summary>
+          <form method="post" action="/cas/{{ c.id }}/statut" class="form-cloture">
+            <input name="traite_par" placeholder="Agent du centre — ex. Dr Ndiaye" required maxlength="60">
+            <input name="note" placeholder="Note de clôture (optionnel)" maxlength="160">
+            <button class="btn-mini vert" name="statut" value="TRAITE">Confirmer la clôture ✓</button>
+          </form>
+        </details>
+        {% else %}
+        <div class="cloture-info">
+          <span style="color:var(--vert);font-size:12px">
+            ✓ par <b>{{ c.traite_par or 'agent non précisé' }}</b> · {{ (c.date_maj or '')[:16] }}</span>
+          {% if c.note %}<div class="note-cloture">« {{ c.note }} »</div>{% endif %}
+          <form method="post" action="/cas/{{ c.id }}/statut" style="margin-top:4px">
+            <button class="btn-mini" name="statut" value="NOUVEAU">Rouvrir</button>
+          </form>
+        </div>
+        {% endif %}
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7" style="color:var(--gris)">Aucun cas signalé.
+        Les dépistages ORANGE et ROUGE de NutriScan apparaîtront ici.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{
+  "Dakar":        {"lat": 14.71, "lon": -17.45, "population": 4030000, "taux_pauvrete": 9,  "densite_medicale": 14, "acces_eau_potable": 97},
+  "Thiès":        {"lat": 14.79, "lon": -16.93, "population": 2210000, "taux_pauvrete": 33, "densite_medicale": 6,  "acces_eau_potable": 88},
+  "Diourbel":     {"lat": 14.66, "lon": -16.23, "population": 1980000, "taux_pauvrete": 45, "densite_medicale": 3,  "acces_eau_potable": 74},
+  "Fatick":       {"lat": 14.34, "lon": -16.41, "population": 870000,  "taux_pauvrete": 52, "densite_medicale": 3,  "acces_eau_potable": 71},
+  "Kaolack":      {"lat": 14.15, "lon": -16.07, "population": 1230000, "taux_pauvrete": 47, "densite_medicale": 4,  "acces_eau_potable": 76},
+  "Kaffrine":     {"lat": 14.10, "lon": -15.55, "population": 720000,  "taux_pauvrete": 58, "densite_medicale": 2,  "acces_eau_potable": 62},
+  "Louga":        {"lat": 15.61, "lon": -16.25, "population": 1080000, "taux_pauvrete": 42, "densite_medicale": 3,  "acces_eau_potable": 70},
+  "Saint-Louis":  {"lat": 16.03, "lon": -16.49, "population": 1110000, "taux_pauvrete": 39, "densite_medicale": 5,  "acces_eau_potable": 82},
+  "Matam":        {"lat": 15.66, "lon": -13.26, "population": 730000,  "taux_pauvrete": 56, "densite_medicale": 2,  "acces_eau_potable": 58},
+  "Tambacounda":  {"lat": 13.77, "lon": -13.67, "population": 870000,  "taux_pauvrete": 62, "densite_medicale": 2,  "acces_eau_potable": 55},
+  "Kédougou":     {"lat": 12.56, "lon": -12.18, "population": 200000,  "taux_pauvrete": 64, "densite_medicale": 2,  "acces_eau_potable": 50},
+  "Kolda":        {"lat": 12.89, "lon": -14.94, "population": 800000,  "taux_pauvrete": 61, "densite_medicale": 2,  "acces_eau_potable": 57},
+  "Sédhiou":      {"lat": 12.71, "lon": -15.55, "population": 560000,  "taux_pauvrete": 65, "densite_medicale": 2,  "acces_eau_potable": 54},
+  "Ziguinchor":   {"lat": 12.58, "lon": -16.27, "population": 660000,  "taux_pauvrete": 51, "densite_medicale": 5,  "acces_eau_potable": 79}
+}

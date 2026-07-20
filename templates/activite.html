@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block titre %}Activité des agents · NutriSénégal{% endblock %}
+{% block contenu %}
+<div class="entete">
+  <h2>Activité des agents</h2>
+  <p>Qui a fait quoi, quand — chaque dépistage, inscription et clôture de cas
+     est journalisé. <a class="lien" href="/admin/export/cas.csv">⬇ Exporter les
+     cas (CSV Ministère / ONG)</a></p>
+</div>
+<div class="bande" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<div class="grille g3">
+  {% for a in agents %}
+  <div class="carte agent-carte">
+    <div class="agent-entete">
+      <div>
+        <b>{{ a.nom }}</b>
+        <div class="agent-meta">@{{ a.identifiant }} · {{ a.zone or a.region }}</div>
+      </div>
+      <span class="badge {{ 'ROLE_ADMIN' if a.role == 'admin' else 'ROLE_AGENT' }}">
+        {{ 'ADMIN' if a.role == 'admin' else 'AGENT' }}</span>
+    </div>
+    <div class="agent-stats">
+      <div><b class="mono">{{ a.dep }}</b><span>dépistages</span></div>
+      <div><b class="mono" style="color:var(--t-rouge)">{{ a.rouges }}</b><span>cas rouges</span></div>
+    </div>
+    <div class="agent-pied">
+      <span class="agent-meta">
+        {% if a.derniere %}Actif le {{ a.derniere[:16] }}{% else %}Aucune activité{% endif %}
+      </span>
+      <div class="actions-cas">
+        <a class="btn-mini" href="/admin/activite?agent_id={{ a.id }}">Journal</a>
+        <form method="post" action="/admin/agents/{{ a.id }}/role">
+          {% if a.role == 'admin' %}
+          <button class="btn-mini" name="role" value="agent">Rétrograder</button>
+          {% else %}
+          <button class="btn-mini vert" name="role" value="admin">Promouvoir admin</button>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="carte" style="margin-top:22px">
+  <div class="carte-entete">
+    <h3>Journal d'activité {% if filtre %}<span class="agent-meta">— filtré</span>{% endif %}</h3>
+    {% if filtre %}<a class="btn-mini" href="/admin/activite">Tout afficher</a>{% endif %}
+  </div>
+  <table>
+    <tr><th>Date</th><th>Agent</th><th>Action</th><th>Détails</th></tr>
+    {% for j in journal %}
+    <tr>
+      <td class="num">{{ j.date_action[:16] }}</td>
+      <td><b>{{ j.agent or '—' }}</b></td>
+      <td><span class="badge ACTION">{{ j.action }}</span></td>
+      <td style="color:var(--gris)">{{ j.details }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4" style="color:var(--gris)">Aucune activité journalisée.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

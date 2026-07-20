@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block titre %}MaliMap · Carte de risque{% endblock %}
+{% block contenu %}
+<div class="entete">
+  <h2>MaliMap — Carte de risque nutritionnel</h2>
+  <p>Pluie (Open-Meteo) × prix (FAO) × cas terrain (NutriScan) · MàJ : {{ maj or 'en attente du scheduler' }}</p>
+</div>
+<div class="bande" aria-hidden="true"><i></i><i></i><i></i></div>
+
+{% if prealertes %}
+  {% for p in prealertes %}<div class="prealerte">⚠ {{ p }}</div>{% endfor %}
+{% endif %}
+
+<iframe class="carte-map" src="/malimap/carte" title="Carte de risque nutritionnel du Sénégal" loading="lazy"></iframe>
+
+<div class="carte" style="margin-top:22px">
+  <h3>Classement des 14 régions <span class="lien mono">/api/scores</span></h3>
+  <table>
+    <tr><th>#</th><th>Région</th><th>Score</th><th style="width:26%"></th><th>Cas actifs</th>
+        <th>Déficit pluie</th><th>Prix</th><th>Niveau</th></tr>
+    {% for s in scores %}
+    <tr>
+      <td class="num">{{ loop.index }}</td>
+      <td><b>{{ s.region }}</b></td>
+      <td class="num"><b>{{ s.score }}</b></td>
+      <td><div class="jauge"><i style="width:{{ s.score }}%;background:
+        {% if s.niveau == 'CRITIQUE' %}var(--t-rouge){% elif s.niveau == 'ELEVE' %}#E87722{% elif s.niveau == 'MODERE' %}var(--t-ambre){% else %}var(--t-vert){% endif %}"></i></div></td>
+      <td class="num">{{ s.cas_30j }}</td>
+      <td class="num">{{ s.pluie_deficit }} %</td>
+      <td class="num">+{{ s.prix_hausse }} %</td>
+      <td><span class="badge {{ s.niveau }}">{{ s.niveau }}</span></td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

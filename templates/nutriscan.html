@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block titre %}NutriScan · Dépistage{% endblock %}
+{% block contenu %}
+<div class="entete">
+  <h2>NutriScan — Dépistage communautaire</h2>
+  <p>Protocole OMS : œdèmes → périmètre brachial → poids-pour-âge.</p>
+</div>
+<div class="bande" aria-hidden="true"><i></i><i></i><i></i></div>
+
+{% if resultat %}
+<div class="resultat {{ resultat.niveau }}" role="status">
+  <div class="niveau">{{ resultat.niveau }} — {{ enfant.prenom }} (fiche #{{ enfant.id }})</div>
+  <p>{{ resultat.message }}</p>
+  <p class="mono" style="font-size:12.5px;margin-top:8px">
+    {% for k, v in resultat.indicateurs.items() %}{{ k }} = {{ v }} &nbsp;·&nbsp; {% endfor %}
+  </p>
+  <div class="conduite"><b>Conduite à tenir :</b> {{ resultat.conduite }}</div>
+</div>
+{% endif %}
+
+<div class="carte">
+  <h3>Fiche de mesure — agent de santé communautaire</h3>
+  <form class="fiche" method="post" action="/nutriscan">
+    <div>
+      <label for="prenom">Prénom de l'enfant</label>
+      <input id="prenom" name="prenom" required placeholder="Awa">
+    </div>
+    <div>
+      <label for="sexe">Sexe</label>
+      <select id="sexe" name="sexe"><option value="F">Fille</option><option value="M">Garçon</option></select>
+    </div>
+    <div>
+      <label for="age_mois">Âge (mois, 0–60)</label>
+      <input id="age_mois" name="age_mois" type="number" min="0" max="60" required placeholder="14">
+    </div>
+    <div>
+      <label for="region">Région</label>
+      <select id="region" name="region">
+        {% for r in regions %}<option>{{ r }}</option>{% endfor %}
+      </select>
+    </div>
+    <div>
+      <label for="poids_kg">Poids (kg)</label>
+      <input id="poids_kg" name="poids_kg" type="number" step="0.1" min="1" max="35" required placeholder="7.4">
+    </div>
+    <div>
+      <label for="taille_cm">Taille (cm)</label>
+      <input id="taille_cm" name="taille_cm" type="number" step="0.5" min="40" max="130" required placeholder="74">
+    </div>
+    <div>
+      <label for="pb_mm">Périmètre brachial — PB (mm, dès 6 mois)</label>
+      <input id="pb_mm" name="pb_mm" type="number" step="1" min="80" max="220" placeholder="118">
+    </div>
+    <div class="case" style="align-self:end">
+      <input id="oedemes" name="oedemes" type="checkbox" value="true">
+      <label for="oedemes" style="margin:0">Œdèmes bilatéraux des pieds</label>
+    </div>
+    <div class="pleine">
+      <button class="principal" type="submit">Calculer le score et enregistrer</button>
+      <span style="color:var(--gris);font-size:12.5px;margin-left:12px">
+        ROUGE → alerte SMS automatique au centre de santé · ORANGE → suivi MamaMenu intensifié.
+      </span>
+    </div>
+  </form>
+</div>
+{% endblock %}

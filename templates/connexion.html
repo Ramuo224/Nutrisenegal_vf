@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Connexion · NutriSénégal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css?v={{ css_v }}">
+</head>
+<body class="auth">
+<div class="auth-split">
+
+  <section class="auth-hero">
+    <div class="auth-hero-haut">
+      <div class="bande drapeau" aria-hidden="true"><i></i><i></i><i></i></div>
+      <span class="auth-badge">🇸🇳 Plateforme de veille nutritionnelle</span>
+    </div>
+    <div class="auth-hero-coeur">
+      <h1>Dépister tôt.<br>Prévenir mieux.<br>Agir là où ça compte.</h1>
+      <p>NutriSénégal relie les agents de terrain, les mères de famille et les
+         décideurs dans une seule boucle de données contre la malnutrition
+         infantile.</p>
+    </div>
+    <ul class="auth-stats">
+      <li><b>10 %</b><span>des enfants &lt; 5 ans en malnutrition aiguë</span></li>
+      <li><b>14</b><span>régions suivies en temps réel</span></li>
+      <li><b>&lt; 500 F</b><span>le coût d'une recette MamaMenu</span></li>
+    </ul>
+  </section>
+
+  <section class="auth-panneau">
+    <div class="auth-carte">
+      <div class="auth-brand">
+        <h1>NutriSénégal</h1>
+        <small>Dépistage · Prévention · Cartographie</small>
+      </div>
+
+      <h2>Connexion</h2>
+      <p class="auth-note">Les dépistages sont des <b>données de santé</b> :
+         l'accès est réservé aux comptes habilités.</p>
+
+      {% if erreur %}<div class="auth-erreur">{{ erreur }}</div>{% endif %}
+
+      <form method="post" action="/connexion" class="fiche une-col">
+        <input type="hidden" name="suivant" value="{{ suivant }}">
+        <div>
+          <label for="c-id">Identifiant</label>
+          <input id="c-id" name="identifiant" value="{{ identifiant }}"
+                 autocomplete="username" required autofocus>
+        </div>
+        <div>
+          <label for="c-mdp">Mot de passe</label>
+          <input id="c-mdp" name="mdp" type="password"
+                 autocomplete="current-password" required>
+        </div>
+        <div><button class="principal" type="submit" style="width:100%">Se connecter</button></div>
+      </form>
+
+      <p class="auth-lien">Nouvel agent ? <a href="/inscription">Créer un compte</a></p>
+      <p class="auth-pied">Mots de passe hachés (PBKDF2) · sessions signées HttpOnly ·
+         pensé pour la loi n° 2008-12 sur les données personnelles (CDP Sénégal)</p>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

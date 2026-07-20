@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block titre %}NutriSénégal · Tableau de bord{% endblock %}
+{% block contenu %}
+<div class="entete">
+  <h2>Tableau de bord national</h2>
+  <p>Le terrain, les familles et les décideurs sur une même boucle de données.</p>
+</div>
+<div class="bande" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<div class="grille g4">
+  <div class="carte stat">
+    <div class="stat-val">{{ stats.depistages }}</div>
+    <div class="stat-lbl">Enfants dépistés (NutriScan)</div>
+  </div>
+  <div class="carte stat rouge">
+    <div class="stat-val">{{ stats.rouges }}</div>
+    <div class="stat-lbl">Alertes rouges — MAS référées</div>
+  </div>
+  <div class="carte stat ambre">
+    <div class="stat-val">{{ stats.cas_actifs }}</div>
+    <div class="stat-lbl">Cas actifs · {{ stats.traites }} traités — <a class="lien" href="/cas">suivi →</a></div>
+  </div>
+  <div class="carte stat vert">
+    <div class="stat-val">{{ stats.abonnees }}</div>
+    <div class="stat-lbl">Mères abonnées MamaMenu · {{ stats.sms }} SMS</div>
+  </div>
+</div>
+
+{% if prealertes %}
+<div style="margin-top:22px">
+  {% for p in prealertes %}<div class="prealerte">⚠ {{ p }}</div>{% endfor %}
+</div>
+{% endif %}
+
+<div class="grille g2" style="margin-top:22px">
+  <div class="carte">
+    <h3>Régions les plus à risque <a class="lien" href="/malimap">Voir la carte →</a></h3>
+    <table>
+      <tr><th>Région</th><th>Score</th><th style="width:34%"></th><th>Cas actifs</th><th>Niveau</th></tr>
+      {% for s in scores %}
+      <tr>
+        <td><b>{{ s.region }}</b></td>
+        <td class="num">{{ s.score }}</td>
+        <td><div class="jauge"><i style="width:{{ s.score }}%;background:
+          {% if s.niveau == 'CRITIQUE' %}var(--t-rouge){% elif s.niveau == 'ELEVE' %}#E87722{% elif s.niveau == 'MODERE' %}var(--t-ambre){% else %}var(--t-vert){% endif %}"></i></div></td>
+        <td class="num">{{ s.cas_30j }}</td>
+        <td><span class="badge {{ s.niveau }}">{{ s.niveau }}</span></td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <div class="carte">
+    <h3>Flux SMS en direct <a class="lien" href="/mamamenu">MamaMenu →</a></h3>
+    <div class="sms-flux">
+      {% for s in sms_recents %}
+      <div class="bulle {{ s.direction }}">{{ s.corps }}<small>{{ s.telephone }} · {{ s.statut }}</small></div>
+      {% else %}
+      <p style="color:var(--gris);font-size:13px">Aucun SMS pour l'instant — lancez un dépistage ou inscrivez une mère.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="carte" style="margin-top:22px">
+  <h3>Derniers dépistages terrain <a class="lien" href="/nutriscan">Nouveau dépistage →</a></h3>
+  <table>
+    <tr><th>Enfant</th><th>Âge</th><th>Région</th><th>Verdict</th><th>Agent</th><th>Date</th></tr>
+    {% for e in derniers %}
+    <tr>
+      <td><b>{{ e.prenom }}</b></td>
+      <td class="num">{{ e.age_mois }} mois</td>
+      <td>{{ e.region }}</td>
+      <td><span class="badge {{ e.score_risque }}">{{ e.score_risque }}</span></td>
+      <td>{{ e.agent or '—' }}</td>
+      <td class="num">{{ e.date_saisie }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6" style="color:var(--gris)">Aucun dépistage enregistré. Commencez avec NutriScan.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

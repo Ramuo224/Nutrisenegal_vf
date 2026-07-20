@@ -1,0 +1,16 @@
+{
+  "Dakar":       {"prix_hausse": 4.2,  "pluie_deficit": 10},
+  "Thiès":       {"prix_hausse": 5.1,  "pluie_deficit": 15},
+  "Diourbel":    {"prix_hausse": 11.8, "pluie_deficit": 34},
+  "Fatick":      {"prix_hausse": 7.4,  "pluie_deficit": 22},
+  "Kaolack":     {"prix_hausse": 8.9,  "pluie_deficit": 25},
+  "Kaffrine":    {"prix_hausse": 10.2, "pluie_deficit": 30},
+  "Louga":       {"prix_hausse": 9.6,  "pluie_deficit": 38},
+  "Saint-Louis": {"prix_hausse": 6.3,  "pluie_deficit": 28},
+  "Matam":       {"prix_hausse": 13.5, "pluie_deficit": 46},
+  "Tambacounda": {"prix_hausse": 12.1, "pluie_deficit": 41},
+  "Kédougou":    {"prix_hausse": 8.8,  "pluie_deficit": 18},
+  "Kolda":       {"prix_hausse": 7.9,  "pluie_deficit": 16},
+  "Sédhiou":     {"prix_hausse": 8.4,  "pluie_deficit": 14},
+  "Ziguinchor":  {"prix_hausse": 5.7,  "pluie_deficit": 12}
+}

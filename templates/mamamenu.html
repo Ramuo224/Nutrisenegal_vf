@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block titre %}MamaMenu · Prévention SMS{% endblock %}
+{% block contenu %}
+<div class="entete">
+  <h2>MamaMenu — Prévention par SMS</h2>
+  <p>1 recette locale par semaine, &lt; 500 FCFA, en français ou en wolof.</p>
+</div>
+<div class="bande" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<div class="grille g2">
+  <div class="carte">
+    <h3>Inscrire une mère — formulaire complet</h3>
+    <p style="color:var(--gris);font-size:12.5px;margin:0 0 10px">
+      Utilisé par l'agent sur le terrain. La mère reçoit immédiatement le SMS
+      de bienvenue et sa première recette, dans la langue choisie.</p>
+    <form class="fiche" method="post" action="/mamamenu/inscription">
+      <div>
+        <label for="i-tel">Numéro de la mère</label>
+        <input id="i-tel" name="telephone" placeholder="+221 77 123 45 67" required>
+      </div>
+      <div>
+        <label for="i-age">Âge de l'enfant (mois)</label>
+        <input id="i-age" name="age_enfant_mois" type="number" min="0" max="60" value="9" required>
+      </div>
+      <div>
+        <label for="i-region">Région</label>
+        <select id="i-region" name="region" required>
+          {% for r in regions %}<option>{{ r }}</option>{% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="i-langue">Langue des SMS</label>
+        <select id="i-langue" name="langue">
+          <option value="fr">Français</option>
+          <option value="wo">Wolof</option>
+        </select>
+      </div>
+      <div class="pleine">
+        <button class="principal" type="submit">Inscrire et envoyer le SMS de bienvenue</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="carte">
+    <h3>Simulateur de téléphone (démo jury)</h3>
+    <form class="fiche" method="post" action="/api/sms/simuler">
+      <div>
+        <label for="telephone">Numéro</label>
+        <input id="telephone" name="telephone" value="+221771234567" required>
+      </div>
+      <div>
+        <label for="corps">Message envoyé par la mère</label>
+        <input id="corps" name="corps" placeholder="9 DIOURBEL" required>
+      </div>
+      <div class="pleine">
+        <button class="principal" type="submit">Envoyer le SMS</button>
+        <span style="color:var(--gris);font-size:12.5px;margin-left:10px">
+          Essayez : <b class="mono">9 DIOURBEL</b> · <b class="mono">WO</b> · <b class="mono">AIDE</b> · <b class="mono">STOP</b>
+        </span>
+      </div>
+    </form>
+    <form method="post" action="/api/campagne-hebdo" style="margin-top:14px">
+      <button class="principal" style="background:#9a6b00" type="submit">
+        Lancer la campagne hebdomadaire ({{ abonnees | length }} abonnées)</button>
+    </form>
+  </div>
+</div>
+
+<div class="grille g2" style="margin-top:22px">
+  <div class="carte">
+    <h3>Conversation SMS</h3>
+    <div class="sms-flux">
+      {% for s in sms_log %}
+      <div class="bulle {{ s.direction }}">{{ s.corps }}<small>{{ s.telephone }} · {{ s.statut }} · {{ s.date_sms }}</small></div>
+      {% else %}
+      <p style="color:var(--gris);font-size:13px">Envoyez « 9 DIOURBEL » avec le simulateur pour démarrer.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="carte">
+    <h3>Mères abonnées</h3>
+    <table>
+      <tr><th>Téléphone</th><th>Enfant</th><th>Région</th><th>Langue</th><th>Suivi</th></tr>
+      {% for a in abonnees %}
+      <tr>
+        <td class="mono">{{ a.telephone }}</td>
+        <td class="num">{{ a.age_enfant_mois }} mois</td>
+        <td>{{ a.region }}</td>
+        <td>{{ 'Wolof' if a.langue == 'wo' else 'Français' }}</td>
+        <td>{% if a.mode_intensif %}<span class="badge ORANGE">INTENSIF</span>{% else %}<span class="badge VERT">HEBDO</span>{% endif %}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" style="color:var(--gris)">Aucune abonnée — utilisez le formulaire ou le simulateur ci-dessus.</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+
+<div class="carte" style="margin-top:22px">
+  <h3>Recettes locales — classées par richesse en fer</h3>
+    <table>
+      <tr><th>Recette</th><th>Âge</th><th>kcal</th><th>Prot.</th><th>Fer</th><th>Vit. A</th><th>Coût</th></tr>
+      {% for r in recettes %}
+      <tr>
+        <td><b>{{ r.nom }}</b></td>
+        <td class="num">{{ r.age_min_mois }}–{{ r.age_max_mois }} m</td>
+        <td class="num">{{ r.kcal }}</td>
+        <td class="num">{{ r.proteines_g }} g</td>
+        <td class="num">{{ r.fer_mg }} mg</td>
+        <td class="num">{{ r.vit_a_ug }} µg</td>
+        <td class="num">{{ r.cout_fcfa }} F</td>
+      </tr>
+      {% endfor %}
+    </table>
+</div>
+{% endblock %}

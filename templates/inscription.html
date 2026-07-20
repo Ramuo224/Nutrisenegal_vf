@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Créer un compte · NutriSénégal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css?v={{ css_v }}">
+</head>
+<body class="auth">
+<div class="auth-split">
+
+  <section class="auth-hero">
+    <div class="auth-hero-haut">
+      <div class="bande drapeau" aria-hidden="true"><i></i><i></i><i></i></div>
+      <span class="auth-badge">🇸🇳 Plateforme de veille nutritionnelle</span>
+    </div>
+    <div class="auth-hero-coeur">
+      <h1>Chaque agent<br>compte sur<br>le terrain.</h1>
+      <p>Créez votre compte pour signer vos dépistages, inscrire des mères à
+         MamaMenu et alimenter la carte nationale du risque nutritionnel.</p>
+    </div>
+    <ul class="auth-stats">
+      <li><b>3</b><span>modules, une seule boucle de données</span></li>
+      <li><b>2G</b><span>fonctionne par simple SMS, sans smartphone</span></li>
+      <li><b>fr · wo</b><span>bilingue français et wolof</span></li>
+    </ul>
+  </section>
+
+  <section class="auth-panneau">
+    <div class="auth-carte">
+      <div class="auth-brand">
+        <h1>NutriSénégal</h1>
+        <small>Dépistage · Prévention · Cartographie</small>
+      </div>
+
+      <h2>Créer un compte agent</h2>
+      <p class="auth-note">Enregistrez votre identifiant pour signer vos
+         dépistages. Les comptes créés ici ont le rôle <b>agent</b> — les accès
+         admin sont attribués par la coordination.</p>
+
+      {% if erreur %}<div class="auth-erreur">{{ erreur }}</div>{% endif %}
+
+      <form method="post" action="/inscription" class="fiche une-col">
+        <div>
+          <label for="i-nom">Nom complet</label>
+          <input id="i-nom" name="nom" value="{{ v.nom or '' }}"
+                 placeholder="Awa Diallo" required>
+        </div>
+        <div>
+          <label for="i-id">Identifiant de connexion</label>
+          <input id="i-id" name="identifiant" value="{{ v.identifiant or '' }}"
+                 placeholder="awa.diallo" autocomplete="username" required
+                 pattern="[a-z0-9_.\-]{3,20}"
+                 title="3 à 20 caractères : minuscules, chiffres, . _ -">
+        </div>
+        <div class="deux-champs">
+          <div>
+            <label for="i-mdp">Mot de passe (8 min.)</label>
+            <input id="i-mdp" name="mdp" type="password" minlength="8"
+                   autocomplete="new-password" required>
+          </div>
+          <div>
+            <label for="i-mdp2">Confirmation</label>
+            <input id="i-mdp2" name="mdp2" type="password" minlength="8"
+                   autocomplete="new-password" required>
+          </div>
+        </div>
+        <div class="deux-champs">
+          <div>
+            <label for="i-region">Région d'affectation</label>
+            <select id="i-region" name="region" required>
+              {% for r in regions %}
+              <option {{ 'selected' if v.region == r }}>{{ r }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div>
+            <label for="i-zone">Zone / poste (optionnel)</label>
+            <input id="i-zone" name="zone" value="{{ v.zone or '' }}"
+                   placeholder="Touba Mosquée">
+          </div>
+        </div>
+        <div><button class="principal" type="submit" style="width:100%">Créer le compte</button></div>
+      </form>
+
+      <p class="auth-lien">Déjà un compte ? <a href="/connexion">Se connecter</a></p>
+      <p class="auth-pied">Mots de passe hachés (PBKDF2) · sessions signées HttpOnly ·
+         pensé pour la loi n° 2008-12 sur les données personnelles (CDP Sénégal)</p>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
